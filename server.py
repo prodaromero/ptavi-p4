@@ -11,19 +11,21 @@ import sys
 
 class EchoHandler(socketserver.DatagramRequestHandler):
     """
-    Echo server class
+    Echo server class 
     """
 
     def handle(self):
         self.wfile.write(b"Hemos recibido tu peticion")
         for line in self.rfile:
             print("El cliente nos manda ", line.decode('utf-8'))
+            print("(IP, PORT): ", self.client_address)
 
 if __name__ == "__main__":
     try:
         PORT = int(sys.argv[1])
     except:
-        sys.exit("ERROR: necesry port")
+        sys.exit("ERROR: required port")
+
     serv = socketserver.UDPServer(('', PORT), EchoHandler)
     print("Lanzando servidor UDP de eco...")
     try:
