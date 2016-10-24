@@ -26,12 +26,17 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             user = user.split(':')[1]
             expires = message.split(' ')[3]
             expires = expires.split('\r\n')[0]
-            
-            print(expires)
+            if int(expires) == 0:
+                if user in self.dicc:
+                    del self.dicc[user]
+                else:
+                    print("ERROR: this user dont exist")
+            else:
+                self.dicc[user] = self.client_address[0]
+
             print("SIP/2.0 200 OK" + '\r\n\r\n')
 
-        self.dicc[user] = self.client_address[0]
-        print(self.dicc)
+            print(self.dicc)
 
 if __name__ == "__main__":
     try:
