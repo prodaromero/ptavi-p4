@@ -8,7 +8,6 @@ import socketserver
 import sys
 
 
-
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class 
@@ -17,19 +16,22 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
     def handle(self):
         print("(IP, PORT):" + str(self.client_address))
-        for line in self.rfile:
-            message = line.decode('utf-8')
-            print("El cliente nos manda ", message)
+        line = self.rfile.read()
+        message = line.decode('utf-8')
+        print("El cliente nos manda " '\r\n' + message)
             
 
-            if message.split(' ')[0] == "REGISTER":
-                user = message.split(':')[1]
-                user = user.split('SIP')[0]
-                print("SIP/2.0 200 OK" + '\r\n\r\n')
-
-            self.dicc[user] = self.client_address[0]
-            print(self.dicc)
+        if message.split(' ')[0] == "REGISTER":
+            user = message.split(' ')[1]
+            user = user.split(':')[1]
+            expires = message.split(' ')[3]
+            expires = expires.split('\r\n')[0]
             
+            print(expires)
+            print("SIP/2.0 200 OK" + '\r\n\r\n')
+
+        self.dicc[user] = self.client_address[0]
+        print(self.dicc)
 
 if __name__ == "__main__":
     try:
