@@ -16,10 +16,11 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     dicc = {}
 
     def handle(self):
- 
+        print("(IP, PORT):" + str(self.client_address))
         for line in self.rfile:
             message = line.decode('utf-8')
             print("El cliente nos manda ", message)
+            
 
             if message.split(' ')[0] == "REGISTER":
                 user = message.split(':')[1]
@@ -37,7 +38,7 @@ if __name__ == "__main__":
         sys.exit("ERROR: required port")
 
     serv = socketserver.UDPServer(('', PORT), SIPRegisterHandler)
-    print("Lanzando servidor UDP de eco...")
+    print("Lanzando servidor SIP...")
     try:
         serv.serve_forever()
     except KeyboardInterrupt:
