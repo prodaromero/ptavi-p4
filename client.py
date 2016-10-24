@@ -15,7 +15,7 @@ try:
     LINE = ' '.join(sys.argv[3:4])
     EXPIRES = sys.argv[5]
 except:
-    sys.exit("ERROR: introduce SERVER, PORT and USER")
+    sys.exit("Usage: client.py ip puerto register sip_address expires_value")
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
